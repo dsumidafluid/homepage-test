@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ニュートン法、二分法、数値積分、オイラー法など主要な数値解析アルゴリズムをまとめます。">
+    <title>主要な数値解析アルゴリズム | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム">
+        <span class="brand-mark">D</span>
+        <span>Dev Notes</span>
+      </a>
+      <nav class="nav" aria-label="主要メニュー">
+        <a href="#roots">方程式</a>
+        <a href="#integral">積分</a>
+        <a href="#ode">ODE</a>
+        <a href="#linear">連立</a>
+        <a class="nav-cta" href="index.html">トップ</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="page-title" aria-labelledby="page-title">
+        <div class="section-inner">
+          <p class="section-kicker">Numerical Methods</p>
+          <h1 id="page-title">主要な数値解析アルゴリズム</h1>
+          <p>
+            数値解析の代表的な計算手法を、目的、使いどころ、注意点、疑似コードで整理します。
+            まずは実装前に流れを思い出すための逆引きメモです。
+          </p>
+        </div>
+      </section>
+
+      <section id="roots" class="section" aria-labelledby="roots-title">
+        <div class="section-inner">
+          <p class="section-kicker">Root Finding</p>
+          <h2 id="roots-title">方程式の解を求める</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>二分法</h3>
+              <p>区間[a, b]でf(a)とf(b)の符号が異なるとき、解を安全に挟み込みます。遅いが安定しやすい方法です。</p>
+              <pre><code>while (b - a &gt; tolerance) {
+    c = (a + b) / 2
+    if f(a) * f(c) &lt;= 0:
+        b = c
+    else:
+        a = c
+}
+root = (a + b) / 2</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ニュートン法</h3>
+              <p>初期値から接線を使って高速に解へ近づきます。導関数が必要で、初期値が悪いと発散することがあります。</p>
+              <pre><code>x = initial
+for i in 1..maxIteration:
+    dx = f(x) / df(x)
+    x = x - dx
+    if abs(dx) &lt; tolerance:
+        break
+root = x</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>割線法</h3>
+              <p>ニュートン法の導関数を差分で近似する方法です。導関数を明示できないときに使いやすいです。</p>
+              <pre><code>x0 = first
+x1 = second
+for i in 1..maxIteration:
+    x2 = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
+    if abs(x2 - x1) &lt; tolerance:
+        break
+    x0 = x1
+    x1 = x2</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>固定点反復法</h3>
+              <p>x = g(x)の形に変形して反復します。収束条件を満たす形に変形できるかが重要です。</p>
+              <pre><code>x = initial
+for i in 1..maxIteration:
+    next = g(x)
+    if abs(next - x) &lt; tolerance:
+        break
+    x = next</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="integral" class="section muted" aria-labelledby="integral-title">
+        <div class="section-inner">
+          <p class="section-kicker">Integration</p>
+          <h2 id="integral-title">数値積分</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>台形則</h3>
+              <p>区間を小さな台形に分けて面積を足します。実装が簡単で、滑らかな関数なら分割数を増やすと精度が上がります。</p>
+              <pre><code>h = (b - a) / n
+sum = (f(a) + f(b)) / 2
+for i in 1..n-1:
+    x = a + i * h
+    sum += f(x)
+integral = h * sum</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>シンプソン則</h3>
+              <p>2次曲線で近似する積分法です。分割数nは偶数にします。台形則より少ない分割で高精度になりやすいです。</p>
+              <pre><code>h = (b - a) / n
+sum = f(a) + f(b)
+for i in 1..n-1:
+    x = a + i * h
+    if i is odd:
+        sum += 4 * f(x)
+    else:
+        sum += 2 * f(x)
+integral = h * sum / 3</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>中点則</h3>
+              <p>各小区間の中央の値で面積を近似します。単純で、関数評価点を端点からずらしたい場合に使えます。</p>
+              <pre><code>h = (b - a) / n
+sum = 0
+for i in 0..n-1:
+    x = a + (i + 0.5) * h
+    sum += f(x)
+integral = h * sum</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>モンテカルロ積分</h3>
+              <p>乱数で平均値を推定します。高次元積分で使われますが、結果にばらつきがあり収束は遅めです。</p>
+              <pre><code>sum = 0
+for i in 1..samples:
+    x = random(a, b)
+    sum += f(x)
+integral = (b - a) * sum / samples</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="ode" class="section" aria-labelledby="ode-title">
+        <div class="section-inner">
+          <p class="section-kicker">ODE</p>
+          <h2 id="ode-title">常微分方程式</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>オイラー法</h3>
+              <p>傾きdy/dx=f(x,y)を使って次の点へ進みます。実装は簡単ですが、刻み幅が大きいと誤差が増えます。</p>
+              <pre><code>x = x0
+y = y0
+while x &lt; end:
+    y = y + h * f(x, y)
+    x = x + h</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>改良オイラー法</h3>
+              <p>予測した傾きと次点の傾きを平均します。オイラー法より精度が上がりやすいです。</p>
+              <pre><code>k1 = f(x, y)
+yPredict = y + h * k1
+k2 = f(x + h, yPredict)
+y = y + h * (k1 + k2) / 2
+x = x + h</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>4次のルンゲクッタ法</h3>
+              <p>代表的な高精度手法です。計算量は増えますが、実用上よく使われます。</p>
+              <pre><code>k1 = f(x, y)
+k2 = f(x + h/2, y + h*k1/2)
+k3 = f(x + h/2, y + h*k2/2)
+k4 = f(x + h, y + h*k3)
+y = y + h * (k1 + 2*k2 + 2*k3 + k4) / 6
+x = x + h</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="linear" class="section muted" aria-labelledby="linear-title">
+        <div class="section-inner">
+          <p class="section-kicker">Linear Algebra</p>
+          <h2 id="linear-title">連立一次方程式・反復法</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>ガウス消去法</h3>
+              <p>行基本変形で上三角行列にしてから後退代入します。小規模な連立方程式の基本です。</p>
+              <pre><code>for k in 0..n-2:
+    choose pivot row
+    eliminate rows below pivot
+
+for i in n-1..0:
+    x[i] = (b[i] - sum(A[i][j] * x[j])) / A[i][i]</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ヤコビ法</h3>
+              <p>前回の全成分を使って次の近似値を計算します。実装が単純で並列化しやすい反復法です。</p>
+              <pre><code>repeat until convergence:
+    for i in 0..n-1:
+        next[i] = (b[i] - sum(A[i][j] * x[j], j != i)) / A[i][i]
+    x = next</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ガウス・ザイデル法</h3>
+              <p>更新済みの成分をすぐ次の計算に使います。ヤコビ法より速く収束することがあります。</p>
+              <pre><code>repeat until convergence:
+    for i in 0..n-1:
+        x[i] = (b[i] - sum(A[i][j] * x[j], j != i)) / A[i][i]</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>収束判定</h3>
+              <p>反復計算では、更新量や残差が十分小さくなったかを見ます。最大反復回数も必ず設定します。</p>
+              <pre><code>error = norm(next - current)
+if error &lt; tolerance:
+    converged = true
+if iteration &gt; maxIteration:
+    stop as not converged</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Dev Notes</span>
+      <a href="#top">ページ上部へ</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

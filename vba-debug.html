@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Excel VBAのデバッグ環境設定、VBEの使い方、ブレークポイント、ウォッチ、イミディエイトの基本をまとめます。">
+    <title>Excel VBA デバッグ環境の設定 | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム">
+        <span class="brand-mark">D</span>
+        <span>Dev Notes</span>
+      </a>
+      <nav class="nav" aria-label="主要メニュー">
+        <a href="#settings">設定</a>
+        <a href="#break">止める</a>
+        <a href="#inspect">見る</a>
+        <a href="#logging">ログ</a>
+        <a class="nav-cta" href="index.html">トップ</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="page-title" aria-labelledby="page-title">
+        <div class="section-inner">
+          <p class="section-kicker">VBA Debug Setup</p>
+          <h1 id="page-title">Excel VBA デバッグ環境の設定</h1>
+          <p>
+            VBAはデバッグ環境を少し整えるだけで、原因調査がかなり楽になります。
+            まずは「必ず宣言」「止める場所を作る」「変数を見る」「ログを残す」の4点を押さえます。
+          </p>
+        </div>
+      </section>
+
+      <section id="settings" class="section" aria-labelledby="settings-title">
+        <div class="section-inner">
+          <p class="section-kicker">Settings</p>
+          <h2 id="settings-title">最初に整えるVBE設定</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>Option Explicitを自動挿入する</h3>
+              <p>VBEで「ツール」→「オプション」→「編集」→「変数の宣言を強制する」をオンにします。新しいモジュールに自動でOption Explicitが入ります。</p>
+              <pre><code>Option Explicit</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>自動構文チェックを好みで調整</h3>
+              <p>入力途中の警告が邪魔なら「自動構文チェック」をオフにします。赤字表示は残るので、エラー位置は後から確認できます。</p>
+              <pre><code>' ツール → オプション → 編集
+' 自動構文チェック: 好みでON/OFF</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>エラートラップは「クラスモジュールで中断」</h3>
+              <p>通常は「クラスモジュールで中断」が扱いやすいです。想定外の場所で止まり、標準的なエラー処理とも相性がよい設定です。</p>
+              <pre><code>' ツール → オプション → 全般
+' エラートラップ: クラスモジュールで中断</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>よく使うウィンドウを表示</h3>
+              <p>プロジェクト、プロパティ、イミディエイト、ローカル、ウォッチを使える状態にします。表示メニューから開けます。</p>
+              <pre><code>' Ctrl + G: イミディエイト
+' 表示 → ローカル ウィンドウ
+' 表示 → ウォッチ ウィンドウ</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="break" class="section muted" aria-labelledby="break-title">
+        <div class="section-inner">
+          <p class="section-kicker">Break</p>
+          <h2 id="break-title">処理を止めて確認する</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>ブレークポイント</h3>
+              <p>止めたい行にカーソルを置いてF9。実行時にその行で止まり、変数やセルの状態を確認できます。</p>
+              <pre><code>Sub Sample()
+    Dim total As Long
+    total = 10  ' ここでF9
+    Debug.Print total
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>Stop文で必ず止める</h3>
+              <p>一時的な確認用です。公開・配布前には消します。</p>
+              <pre><code>Sub CheckPoint()
+    Stop
+    ' ここで必ず中断する
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ステップ実行</h3>
+              <p>F8で1行ずつ実行します。処理の流れを追うときに最も使う操作です。</p>
+              <pre><code>' F8: ステップイン
+' Shift + F8: ステップオーバー
+' Ctrl + Shift + F8: ステップアウト</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>カーソル行まで実行</h3>
+              <p>止まりたい行にカーソルを置いてCtrl+F8。長い処理の途中まで一気に進めたいときに便利です。</p>
+              <pre><code>' Ctrl + F8: カーソル行の前まで実行</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="inspect" class="section" aria-labelledby="inspect-title">
+        <div class="section-inner">
+          <p class="section-kicker">Inspect</p>
+          <h2 id="inspect-title">変数・条件・オブジェクトを見る</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>イミディエイトで値を見る</h3>
+              <p>Ctrl+Gで開き、? に続けて式を書くと、その場で値を確認できます。</p>
+              <pre><code>? ActiveSheet.Name
+? Range("A1").Value
+? Now</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>Debug.Printでログを出す</h3>
+              <p>実行中の状態をイミディエイトウィンドウに出します。</p>
+              <pre><code>Debug.Print "row=", i, "value=", ws.Cells(i, 1).Value</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ローカルウィンドウ</h3>
+              <p>現在のSub/Function内の変数を一覧で見られます。配列やオブジェクトの中身を追うときに便利です。</p>
+              <pre><code>' 表示 → ローカル ウィンドウ</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ウォッチ式</h3>
+              <p>特定の変数や条件を監視します。「値が変わったら中断」や「Trueになったら中断」に使えます。</p>
+              <pre><code>' 例: i &gt; 1000
+' 例: total &lt; 0
+' 例: dict.Exists(key)</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="logging" class="section muted" aria-labelledby="logging-title">
+        <div class="section-inner">
+          <p class="section-kicker">Logging</p>
+          <h2 id="logging-title">調査しやすいコードの形</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>処理入口と出口をログに出す</h3>
+              <p>どこまで進んだかを簡単に追えるようにします。</p>
+              <pre><code>Sub Main()
+    Debug.Print Now, "Main start"
+    ' 処理
+    Debug.Print Now, "Main end"
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>Err.NumberとErr.Descriptionを残す</h3>
+              <p>エラーが出たときに原因調査しやすくします。</p>
+              <pre><code>Sub RunWithErrorLog()
+    On Error GoTo ErrHandler
+
+    ' 処理
+    Exit Sub
+
+ErrHandler:
+    Debug.Print "Error", Err.Number, Err.Description
+    MsgBox Err.Description, vbExclamation
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>小さいSubに分ける</h3>
+              <p>1つの巨大マクロより、入力、変換、出力を分ける方が止めやすく調べやすいです。</p>
+              <pre><code>Sub Main()
+    ReadInput
+    TransformData
+    WriteOutput
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>確認用フラグを用意する</h3>
+              <p>調査中だけ詳細ログを出せるようにします。</p>
+              <pre><code>Const DEBUG_MODE As Boolean = True
+
+If DEBUG_MODE Then
+    Debug.Print "count=", itemCount
+End If</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Dev Notes</span>
+      <a href="#top">ページ上部へ</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
