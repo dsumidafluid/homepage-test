@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Javaでよく使う有用ルーチン、サンプルコード、AI相談プロンプトを逆引き形式でまとめます。">
+    <title>Java 有用ルーチン集 | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム">
+        <span class="brand-mark">D</span>
+        <span>Dev Notes</span>
+      </a>
+      <nav class="nav" aria-label="主要メニュー">
+        <a href="#strings">文字列</a>
+        <a href="#collections">List/Map</a>
+        <a href="#files">ファイル</a>
+        <a href="#time">日付</a>
+        <a href="#ai">AIメモ</a>
+        <a class="nav-cta" href="index.html">トップ</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="page-title" aria-labelledby="page-title">
+        <div class="section-inner">
+          <p class="section-kicker">Java Dictionary</p>
+          <h1 id="page-title">Java 有用ルーチン集</h1>
+          <p>
+            Javaで何度も書く処理を、小さなメソッドや短いサンプルとして整理します。
+            まずは標準ライブラリ中心に、仕事固有の情報を含まない一般的な部品としてまとめています。
+          </p>
+        </div>
+      </section>
+
+      <section id="strings" class="section" aria-labelledby="strings-title">
+        <div class="section-inner">
+          <p class="section-kicker">Strings</p>
+          <h2 id="strings-title">文字列処理</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>nullまたは空文字を判定</h3>
+              <p>入力値チェックでよく使う基本形です。</p>
+              <pre><code>public static boolean isBlank(String value) {
+    return value == null || value.trim().isEmpty();
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>デフォルト値を返す</h3>
+              <p>nullや空文字のときに代替文字列を返します。</p>
+              <pre><code>public static String defaultIfBlank(String value, String defaultValue) {
+    return isBlank(value) ? defaultValue : value;
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>文字列を安全に数値化</h3>
+              <p>変換できない場合はOptional.empty()を返します。</p>
+              <pre><code>public static Optional&lt;Integer&gt; parseIntSafe(String value) {
+    try {
+        return Optional.of(Integer.parseInt(value.trim()));
+    } catch (Exception e) {
+        return Optional.empty();
+    }
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>区切り文字で結合</h3>
+              <p>nullを除外して読みやすく結合します。</p>
+              <pre><code>public static String joinNonNull(List&lt;String&gt; values, String delimiter) {
+    return values.stream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.joining(delimiter));
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>先頭だけ大文字にする</h3>
+              <p>ラベルや表示名の整形に使えます。</p>
+              <pre><code>public static String capitalize(String value) {
+    if (isBlank(value)) return value;
+    return value.substring(0, 1).toUpperCase() + value.substring(1);
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>固定長で左ゼロ埋め</h3>
+              <p>IDや番号の表示整形に使います。</p>
+              <pre><code>public static String zeroPad(int number, int length) {
+    return String.format("%0" + length + "d", number);
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="collections" class="section muted" aria-labelledby="collections-title">
+        <div class="section-inner">
+          <p class="section-kicker">Collections</p>
+          <h2 id="collections-title">List・Map・Stream</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>Listを安全に空リスト化</h3>
+              <p>nullチェックを呼び出し側に散らさないための部品です。</p>
+              <pre><code>public static &lt;T&gt; List&lt;T&gt; emptyIfNull(List&lt;T&gt; values) {
+    return values == null ? Collections.emptyList() : values;
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>重複を除去する</h3>
+              <p>順序を保ったまま重複を取り除きます。</p>
+              <pre><code>public static &lt;T&gt; List&lt;T&gt; distinctKeepOrder(List&lt;T&gt; values) {
+    return new ArrayList&lt;&gt;(new LinkedHashSet&lt;&gt;(values));
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>Listを指定サイズで分割</h3>
+              <p>大量データをバッチ処理するときに便利です。</p>
+              <pre><code>public static &lt;T&gt; List&lt;List&lt;T&gt;&gt; chunk(List&lt;T&gt; values, int size) {
+    List&lt;List&lt;T&gt;&gt; result = new ArrayList&lt;&gt;();
+    for (int i = 0; i &lt; values.size(); i += size) {
+        result.add(values.subList(i, Math.min(i + size, values.size())));
+    }
+    return result;
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>Mapの値を安全に取得</h3>
+              <p>キーがない場合のデフォルトを指定します。</p>
+              <pre><code>public static &lt;K, V&gt; V getOrDefault(Map&lt;K, V&gt; map, K key, V defaultValue) {
+    if (map == null) return defaultValue;
+    return map.getOrDefault(key, defaultValue);
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>要素の件数を集計する</h3>
+              <p>文字列ごとの出現回数をMapにします。</p>
+              <pre><code>public static Map&lt;String, Long&gt; countByValue(List&lt;String&gt; values) {
+    return values.stream()
+            .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>条件に合う最初の要素を取得</h3>
+              <p>見つからない場合はOptional.empty()です。</p>
+              <pre><code>public static &lt;T&gt; Optional&lt;T&gt; findFirst(List&lt;T&gt; values, Predicate&lt;T&gt; predicate) {
+    return values.stream()
+            .filter(predicate)
+            .findFirst();
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="files" class="section" aria-labelledby="files-title">
+        <div class="section-inner">
+          <p class="section-kicker">Files</p>
+          <h2 id="files-title">ファイル・CSV・パス処理</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>テキストファイルを全行読む</h3>
+              <p>UTF-8のテキストをListとして読み込みます。</p>
+              <pre><code>public static List&lt;String&gt; readLines(Path path) throws IOException {
+    return Files.readAllLines(path, StandardCharsets.UTF_8);
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>テキストファイルへ書き込む</h3>
+              <p>親フォルダを作ってから保存します。</p>
+              <pre><code>public static void writeText(Path path, String text) throws IOException {
+    Files.createDirectories(path.getParent());
+    Files.writeString(path, text, StandardCharsets.UTF_8);
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>フォルダ内のファイル一覧</h3>
+              <p>拡張子で絞り込んでPathの一覧を返します。</p>
+              <pre><code>public static List&lt;Path&gt; listFiles(Path folder, String extension) throws IOException {
+    try (Stream&lt;Path&gt; stream = Files.list(folder)) {
+        return stream
+                .filter(Files::isRegularFile)
+                .filter(path -&gt; path.toString().endsWith(extension))
+                .toList();
+    }
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>CSVの1行を分割する簡易版</h3>
+              <p>引用符を扱わない単純なCSV向けです。</p>
+              <pre><code>public static List&lt;String&gt; splitCsvSimple(String line) {
+    return Arrays.stream(line.split(",", -1))
+            .map(String::trim)
+            .toList();
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>ファイル名にタイムスタンプを付ける</h3>
+              <p>ログや出力ファイルの上書きを避けます。</p>
+              <pre><code>public static String timestampFileName(String prefix, String extension) {
+    String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+    return prefix + "_" + stamp + "." + extension;
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>ファイルサイズを読みやすく表示</h3>
+              <p>バイト数をKB/MB表記にします。</p>
+              <pre><code>public static String humanSize(long bytes) {
+    if (bytes &lt; 1024) return bytes + " B";
+    if (bytes &lt; 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+    return String.format("%.1f MB", bytes / 1024.0 / 1024.0);
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="time" class="section muted" aria-labelledby="time-title">
+        <div class="section-inner">
+          <p class="section-kicker">Date Time</p>
+          <h2 id="time-title">日付・例外・ログ</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>日付文字列をLocalDateへ変換</h3>
+              <p>形式が合わない場合はOptional.empty()にします。</p>
+              <pre><code>public static Optional&lt;LocalDate&gt; parseDate(String value, String pattern) {
+    try {
+        return Optional.of(LocalDate.parse(value, DateTimeFormatter.ofPattern(pattern)));
+    } catch (DateTimeParseException e) {
+        return Optional.empty();
+    }
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>処理時間を測る</h3>
+              <p>簡単な性能確認用の定番コードです。</p>
+              <pre><code>public static void measure(String name, Runnable task) {
+    long start = System.nanoTime();
+    task.run();
+    long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+    System.out.println(name + ": " + elapsedMs + " ms");
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>例外をメッセージ付きで投げる</h3>
+              <p>前提条件を明確にしたいときに使います。</p>
+              <pre><code>public static void require(boolean condition, String message) {
+    if (!condition) {
+        throw new IllegalArgumentException(message);
+    }
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>try-with-resourcesの基本形</h3>
+              <p>閉じ忘れを防ぐファイル読み込みの形です。</p>
+              <pre><code>public static void printFile(Path path) throws IOException {
+    try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+    }
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>Optionalを値に変換</h3>
+              <p>空の場合に例外ではなくデフォルト値を返します。</p>
+              <pre><code>public static &lt;T&gt; T orElse(Optional&lt;T&gt; optional, T defaultValue) {
+    return optional.orElse(defaultValue);
+}</code></pre>
+            </article>
+
+            <article class="snippet-card">
+              <h3>簡易ログ出力</h3>
+              <p>学習用や小さなツール向けの最小ログです。</p>
+              <pre><code>public static void log(String message) {
+    String now = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    System.out.println("[" + now + "] " + message);
+}</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="ai" class="section" aria-labelledby="ai-title">
+        <div class="section-inner">
+          <p class="section-kicker">AI Prompt</p>
+          <h2 id="ai-title">JavaをAIに相談するときの依頼文</h2>
+          <div class="prompt-list">
+            <article>
+              <h3>コードレビューしてほしい</h3>
+              <pre><code>次のJavaコードをレビューしてください。
+観点は、可読性、例外処理、null安全性、テストしやすさ、標準ライブラリの使い方です。
+修正版コードと、変更理由を分けて説明してください。</code></pre>
+            </article>
+            <article>
+              <h3>テストケースを考えたい</h3>
+              <pre><code>次のJavaメソッドに対するJUnitのテスト観点を挙げてください。
+正常系、境界値、異常系、nullや空リストの場合を含めてください。
+必要ならテストコード例も出してください。</code></pre>
+            </article>
+            <article>
+              <h3>設計を相談したい</h3>
+              <pre><code>次の処理をJavaで実装したいです。
+入力:
+出力:
+制約:
+想定データ量:
+クラス構成、メソッド分割、例外処理の方針を提案してください。</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Dev Notes</span>
+      <a href="#top">ページ上部へ</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
