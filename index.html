@@ -3,25 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="低コストで始められる、信頼感のある小規模事業向けホームページです。">
-    <title>Smart Start Studio | コスパ重視のホームページ制作</title>
+    <meta name="description" content="Excel VBA、Java、AI活用を短いサンプルと逆引きでまとめる個人用の技術ノートです。">
+    <title>Excel VBA・Java・AI活用ノート</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Smart Start Studio ホーム">
-        <span class="brand-mark">S</span>
-        <span>Smart Start Studio</span>
+      <a class="brand" href="index.html#top" aria-label="Excel VBA・Java・AI活用ノート ホーム">
+        <span class="brand-mark">D</span>
+        <span>Dev Notes</span>
       </a>
       <nav class="nav" aria-label="主要メニュー">
-        <a href="#service">内容</a>
-        <a href="#price">料金</a>
-        <a href="#flow">流れ</a>
-        <a class="nav-cta" href="#contact">相談する</a>
+        <a href="index.html#topics">カテゴリ</a>
+        <a href="vba.html">VBA辞書</a>
+        <a href="index.html#policy">方針</a>
+        <a class="nav-cta" href="index.html#next">次に作る</a>
       </nav>
       <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
         <span></span>
@@ -31,124 +31,82 @@
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero tech-hero" aria-labelledby="hero-title">
         <img class="hero-image" src="assets/hero.png" alt="">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-          <p class="eyebrow">Static website, low running cost</p>
-          <h1 id="hero-title">必要な情報がすぐ伝わる、軽くて育てやすいホームページ。</h1>
+          <p class="eyebrow">Excel VBA / Java / AI</p>
+          <h1 id="hero-title">すぐ引ける、育てていく技術ノート。</h1>
           <p class="hero-copy">
-            小規模事業や個人サービスにちょうどいい、1ページ構成の静的サイトです。
-            サーバー費を抑えながら、信頼感・問い合わせ導線・スマホ対応をきちんと整えます。
+            何度も調べるExcel VBAの定番処理、Javaの基本、AIへの聞き方を、
+            短いサンプルと実用メモで整理していく個人用コード辞書です。
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#contact">無料相談をはじめる</a>
-            <a class="button secondary" href="#price">費用を見る</a>
+            <a class="button primary" href="vba.html">VBA辞書を見る</a>
+            <a class="button secondary" href="#topics">カテゴリを見る</a>
           </div>
         </div>
       </section>
 
-      <section class="method band" aria-labelledby="method-title">
-        <div class="section-inner two-column">
-          <div>
-            <p class="section-kicker">Recommended method</p>
-            <h2 id="method-title">おすすめは「静的サイト + 無料ホスティング」。</h2>
-          </div>
-          <p>
-            WordPressなどのCMSは更新機能が便利ですが、保守・セキュリティ・サーバー代が増えがちです。
-            まずはHTML/CSS/JavaScriptだけで作り、GitHub PagesやNetlifyで公開すると、初期費用と運用費をかなり抑えられます。
-          </p>
-        </div>
-      </section>
-
-      <section id="service" class="section" aria-labelledby="service-title">
+      <section id="topics" class="section" aria-labelledby="topics-title">
         <div class="section-inner">
-          <p class="section-kicker">What you get</p>
-          <h2 id="service-title">最小構成でも、事業に必要な要素は外しません。</h2>
+          <p class="section-kicker">Topics</p>
+          <h2 id="topics-title">まずは3つの柱で増やしていく。</h2>
           <div class="feature-grid">
             <article class="feature-card">
-              <span class="icon">01</span>
-              <h3>伝わるファーストビュー</h3>
-              <p>誰向けのサービスか、何を頼めるのか、次に何をすればいいのかを上部で明確にします。</p>
+              <span class="icon">VBA</span>
+              <h3>Excel VBA逆引き</h3>
+              <p>セル操作、シート操作、ファイル処理、配列、Dictionary、エラー処理など、実務でよく使う小さな部品を集めます。</p>
+              <a class="text-link" href="vba.html">VBAルーチン集へ</a>
             </article>
             <article class="feature-card">
-              <span class="icon">02</span>
-              <h3>スマホ前提の設計</h3>
-              <p>問い合わせ前に見られる情報を整理し、スマホでも読みやすい余白と文字サイズで整えます。</p>
+              <span class="icon">Java</span>
+              <h3>Java基礎メモ</h3>
+              <p>List、Map、ファイル入出力、例外処理、テスト観点など、あとで引き直したい基本を短く整理します。</p>
             </article>
             <article class="feature-card">
-              <span class="icon">03</span>
-              <h3>公開後の低コスト運用</h3>
-              <p>静的サイトなので表示が速く、保守箇所も少なめ。内容更新も小さな修正で済みます。</p>
+              <span class="icon">AI</span>
+              <h3>AI活用メモ</h3>
+              <p>コード説明、エラー調査、リファクタリング、文章整理など、AIに頼むと便利な依頼文と注意点をまとめます。</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="price" class="section muted" aria-labelledby="price-title">
-        <div class="section-inner price-layout">
+      <section id="policy" class="section muted" aria-labelledby="policy-title">
+        <div class="section-inner two-column">
           <div>
-            <p class="section-kicker">Budget</p>
-            <h2 id="price-title">まずは月額ほぼゼロで始める。</h2>
-            <p>
-              独自ドメインを使う場合でも、主な固定費はドメイン代だけにできます。
-              予約機能やブログなどが必要になった時点で、後から機能を足す方が無駄が出にくいです。
-            </p>
+            <p class="section-kicker">Policy</p>
+            <h2 id="policy-title">仕事の機密に触れず、自分で試した内容を残す。</h2>
           </div>
-          <div class="price-panel">
-            <dl>
-              <div>
-                <dt>公開方法</dt>
-                <dd>GitHub Pages / Netlify</dd>
-              </div>
-              <div>
-                <dt>月額サーバー費</dt>
-                <dd>0円から</dd>
-              </div>
-              <div>
-                <dt>向いている用途</dt>
-                <dd>店舗、士業、個人サービス、採用LP</dd>
-              </div>
-            </dl>
+          <div class="note-list">
+            <p>会社の業務内容や機密データは載せず、一般化したサンプルだけを掲載します。</p>
+            <p>AIで作ったコードも、意味を確認してから自分のメモとして整えます。</p>
+            <p>他サイトや書籍の文章・コードは転載せず、必要な場合は公式情報へのリンクで参照します。</p>
           </div>
         </div>
       </section>
 
-      <section id="flow" class="section" aria-labelledby="flow-title">
+      <section id="next" class="section" aria-labelledby="next-title">
         <div class="section-inner">
-          <p class="section-kicker">Flow</p>
-          <h2 id="flow-title">公開までの流れ</h2>
-          <ol class="steps">
-            <li>
-              <strong>情報整理</strong>
-              <span>サービス内容、料金、問い合わせ先、実績や写真を集めます。</span>
-            </li>
-            <li>
-              <strong>ページ制作</strong>
-              <span>1ページに必要情報をまとめ、スマホとPCで表示を確認します。</span>
-            </li>
-            <li>
-              <strong>公開と改善</strong>
-              <span>無料ホスティングで公開し、反応を見ながら内容を磨きます。</span>
-            </li>
-          </ol>
-        </div>
-      </section>
-
-      <section id="contact" class="contact" aria-labelledby="contact-title">
-        <div class="section-inner contact-inner">
-          <div>
-            <p class="section-kicker">Contact</p>
-            <h2 id="contact-title">小さく始めて、必要な分だけ育てましょう。</h2>
-            <p>事業名・サービス内容・掲載したい連絡先が決まれば、このテンプレートをすぐ実案件向けに差し替えられます。</p>
+          <p class="section-kicker">Next</p>
+          <h2 id="next-title">最初の中身はExcel VBAから。</h2>
+          <div class="article-preview">
+            <div>
+              <h3>Excel VBA 有用関数・ルーチン集</h3>
+              <p>
+                フォルダ作成、最終行取得、CSV出力、Dictionary集計、エラー処理など、
+                コピペして調整しやすい粒度のサンプルをまとめました。
+              </p>
+            </div>
+            <a class="button primary" href="vba.html">開く</a>
           </div>
-          <a class="button primary" href="mailto:hello@example.com">hello@example.com</a>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>&copy; 2026 Smart Start Studio</span>
+      <span>&copy; 2026 Dev Notes</span>
       <a href="#top">ページ上部へ</a>
     </footer>
 
