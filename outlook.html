@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Outlookの基本機能と、メール整理、予定表、署名、ルール、検索などの有用な使い方をまとめます。">
+    <title>Outlook 基本機能と有用機能 | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム"><span class="brand-mark">D</span><span>Dev Notes</span></a>
+      <nav class="nav" aria-label="主要メニュー"><a href="#mail">メール</a><a href="#calendar">予定表</a><a href="#organize">整理</a><a href="#tips">便利</a><a class="nav-cta" href="index.html">トップ</a></nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <main>
+      <section class="page-title" aria-labelledby="page-title"><div class="section-inner"><p class="section-kicker">Outlook Notes</p><h1 id="page-title">Outlook 基本機能と有用機能</h1><p>メール、予定表、連絡先、タスク、ルール、検索を日々の業務で使いやすくするための基本メモです。</p></div></section>
+      <section id="mail" class="section"><div class="section-inner"><p class="section-kicker">Mail</p><h2>メールの基本</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>件名で要件を伝える</h3><p>受信者が後で検索しやすいように、目的と対象を短く入れます。</p><pre><code>例:
+【確認依頼】7月分の集計表
+【共有】会議メモ 2026-06-29</code></pre></article>
+        <article class="snippet-card"><h3>宛先の使い分け</h3><p>Toは対応してほしい人、Ccは共有先、Bccは他の受信者に見せない送信先です。</p><pre><code>To: 作業者
+Cc: 関係者
+Bcc: 非表示の共有先</code></pre></article>
+        <article class="snippet-card"><h3>署名を用意する</h3><p>名前、所属、連絡先を毎回手入力しないように署名を作ります。</p><pre><code>名前
+部署/役割
+メール
+電話</code></pre></article>
+        <article class="snippet-card"><h3>添付前チェック</h3><p>送信前にファイル名、版数、宛先、本文の添付記載を確認します。</p><pre><code>確認:
+- 宛先
+- 添付ファイル
+- ファイル名
+- 版数</code></pre></article>
+      </div></div></section>
+      <section id="calendar" class="section muted"><div class="section-inner"><p class="section-kicker">Calendar</p><h2>予定表・会議</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>予定と会議を分ける</h3><p>自分だけの作業時間は予定、参加者を招待するものは会議として登録します。</p><pre><code>予定: 自分の作業時間
+会議: 参加者あり</code></pre></article>
+        <article class="snippet-card"><h3>空き時間を確認する</h3><p>会議依頼では参加者の予定を確認し、重なりにくい時間を選びます。</p><pre><code>スケジュール アシスタントで確認</code></pre></article>
+        <article class="snippet-card"><h3>リマインダー</h3><p>会議前や締切前に通知を出す設定です。準備が必要な予定ほど早めに設定します。</p><pre><code>例:
+会議 15分前
+資料準備 1日前</code></pre></article>
+        <article class="snippet-card"><h3>予定に資料リンクを入れる</h3><p>会議メモ、資料、議題を予定本文に入れると、直前に探さなくて済みます。</p><pre><code>本文:
+- 議題
+- 資料リンク
+- 決めたいこと</code></pre></article>
+      </div></div></section>
+      <section id="organize" class="section"><div class="section-inner"><p class="section-kicker">Organize</p><h2>整理と検索</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>フォルダーで分ける</h3><p>案件、相手、状態など、後から探す軸で分けます。細かくしすぎない方が続きます。</p><pre><code>例:
+01_対応中
+02_保留
+03_完了</code></pre></article>
+        <article class="snippet-card"><h3>ルールで自動振り分け</h3><p>差出人、件名、宛先などを条件に、自動でフォルダーへ移動できます。</p><pre><code>条件: 差出人がX
+処理: フォルダーYへ移動</code></pre></article>
+        <article class="snippet-card"><h3>フラグを使う</h3><p>返信や確認が必要なメールにフラグを付け、後で一覧できます。</p><pre><code>今日
+明日
+今週</code></pre></article>
+        <article class="snippet-card"><h3>検索キーワード</h3><p>差出人、件名、添付ありなどで絞ると早く探せます。</p><pre><code>from:tanaka
+subject:見積
+hasattachments:yes</code></pre></article>
+      </div></div></section>
+      <section id="tips" class="section muted"><div class="section-inner"><p class="section-kicker">Useful</p><h2>有用な使い方</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>クイック操作</h3><p>よく使う移動、分類、返信文などをまとめて実行できます。</p><pre><code>例:
+フォルダーへ移動
+分類を付与
+定型返信</code></pre></article>
+        <article class="snippet-card"><h3>定型文を作る</h3><p>毎回似た文面を書く場合はテンプレート化するとミスが減ります。</p><pre><code>いつもお世話になっております。
+以下、ご確認ください。</code></pre></article>
+        <article class="snippet-card"><h3>メールをタスク化</h3><p>すぐ返信できないメールは、フラグやTo Doに入れて見落としを減らします。</p><pre><code>対応待ち
+確認待ち
+期限あり</code></pre></article>
+        <article class="snippet-card"><h3>迷惑メールと安全な差出人</h3><p>不要なメールは迷惑メール設定へ、必要な相手は安全な差出人に登録します。</p><pre><code>重要:
+必要な通知までブロックしないよう確認</code></pre></article>
+      </div></div></section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

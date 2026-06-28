@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Microsoft Accessの基礎的な使い方と、VBAで使う有用ルーチンをまとめます。">
+    <title>Access 基礎・有用ルーチン | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム">
+        <span class="brand-mark">D</span>
+        <span>Dev Notes</span>
+      </a>
+      <nav class="nav" aria-label="主要メニュー">
+        <a href="#basic">基礎</a>
+        <a href="#query">クエリ</a>
+        <a href="#csv">CSV</a>
+        <a href="#vba">VBA</a>
+        <a class="nav-cta" href="index.html">トップ</a>
+      </nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="page-title" aria-labelledby="page-title">
+        <div class="section-inner">
+          <p class="section-kicker">Access Notes</p>
+          <h1 id="page-title">Access 基礎・有用ルーチン</h1>
+          <p>小規模なデータ管理で使うAccessの基本構成と、CSV入出力、クエリ実行、レコードセット処理の定番ルーチンをまとめます。</p>
+        </div>
+      </section>
+
+      <section id="basic" class="section" aria-labelledby="basic-title">
+        <div class="section-inner">
+          <p class="section-kicker">Basics</p>
+          <h2 id="basic-title">Accessの基本部品</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card"><h3>テーブル</h3><p>データを保存する場所です。主キー、データ型、必須入力、インデックスを先に決めると崩れにくくなります。</p><pre><code>例:
+T_顧客
+- 顧客ID: オートナンバー
+- 顧客名: 短いテキスト
+- 登録日: 日付/時刻</code></pre></article>
+            <article class="snippet-card"><h3>クエリ</h3><p>抽出、並べ替え、集計、更新を行う部品です。直接テーブルを触る前に、選択クエリで結果を確認します。</p><pre><code>SELECT 顧客ID, 顧客名
+FROM T_顧客
+ORDER BY 顧客ID;</code></pre></article>
+            <article class="snippet-card"><h3>フォーム</h3><p>入力画面です。ユーザーに直接テーブルを見せず、フォーム経由で入力させるとミスを減らせます。</p><pre><code>フォームの役割:
+- 入力チェック
+- 表示項目の整理
+- ボタン操作の配置</code></pre></article>
+            <article class="snippet-card"><h3>レポート</h3><p>印刷やPDF化向けの出力画面です。見積書、一覧表、集計表などの定型出力に向いています。</p><pre><code>レポートの流れ:
+クエリで対象データを作る
+レポートで印刷レイアウトにする</code></pre></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="query" class="section muted" aria-labelledby="query-title">
+        <div class="section-inner">
+          <p class="section-kicker">Query</p>
+          <h2 id="query-title">クエリとSQLの基本</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card"><h3>条件で抽出</h3><p>WHEREで必要な行だけを取り出します。</p><pre><code>SELECT *
+FROM T_売上
+WHERE 売上日 &gt;= #2026/01/01#;</code></pre></article>
+            <article class="snippet-card"><h3>集計する</h3><p>GROUP BYで分類ごとの合計や件数を出します。</p><pre><code>SELECT 商品名, Sum(金額) AS 合計金額
+FROM T_売上
+GROUP BY 商品名;</code></pre></article>
+            <article class="snippet-card"><h3>テーブルを結合</h3><p>関連するテーブルをキーでつなぎます。</p><pre><code>SELECT A.売上ID, B.顧客名
+FROM T_売上 AS A
+INNER JOIN T_顧客 AS B
+ON A.顧客ID = B.顧客ID;</code></pre></article>
+            <article class="snippet-card"><h3>更新前に選択クエリで確認</h3><p>UPDATEやDELETEの前に、同じ条件のSELECTで対象件数を確認します。</p><pre><code>SELECT *
+FROM T_顧客
+WHERE 更新対象 = True;</code></pre></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="csv" class="section" aria-labelledby="csv-title">
+        <div class="section-inner">
+          <p class="section-kicker">CSV</p>
+          <h2 id="csv-title">CSVインポート・エクスポート</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card"><h3>CSVをテーブルへ取り込む</h3><p>DoCmd.TransferTextでCSVを取り込みます。実運用ではインポート定義を作って列型を固定すると安定します。</p><pre><code>Sub ImportCsv(csvPath As String)
+    DoCmd.TransferText _
+        TransferType:=acImportDelim, _
+        TableName:="T_取込", _
+        FileName:=csvPath, _
+        HasFieldNames:=True
+End Sub</code></pre></article>
+            <article class="snippet-card"><h3>クエリ結果をCSVへ出力</h3><p>集計クエリや抽出クエリをCSVに出します。</p><pre><code>Sub ExportQueryToCsv(csvPath As String)
+    DoCmd.TransferText _
+        TransferType:=acExportDelim, _
+        TableName:="Q_出力用", _
+        FileName:=csvPath, _
+        HasFieldNames:=True
+End Sub</code></pre></article>
+            <article class="snippet-card"><h3>取込用の一時テーブル</h3><p>CSVは直接本番テーブルに入れず、一時テーブルに取り込んで検査してから反映すると安全です。</p><pre><code>流れ:
+CSV → T_取込一時
+T_取込一時をチェック
+問題なければ本番テーブルへ追加</code></pre></article>
+            <article class="snippet-card"><h3>文字化け対策</h3><p>CSVの文字コード、区切り文字、日付形式、先頭ゼロが消えないかを取り込み前に確認します。</p><pre><code>確認項目:
+- UTF-8 / Shift_JIS
+- カンマ区切り / タブ区切り
+- 日付形式
+- ID列の先頭ゼロ</code></pre></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="vba" class="section muted" aria-labelledby="vba-title">
+        <div class="section-inner">
+          <p class="section-kicker">VBA</p>
+          <h2 id="vba-title">Access VBAの定番ルーチン</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card"><h3>SQLを実行する</h3><p>追加、更新、削除などのアクションクエリを実行します。</p><pre><code>Sub ExecuteSql(sql As String)
+    CurrentDb.Execute sql, dbFailOnError
+End Sub</code></pre></article>
+            <article class="snippet-card"><h3>レコードセットを読む</h3><p>SELECT結果を1行ずつ処理します。</p><pre><code>Sub LoopRecords()
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT * FROM T_顧客")
+
+    Do Until rs.EOF
+        Debug.Print rs!顧客名
+        rs.MoveNext
+    Loop
+    rs.Close
+End Sub</code></pre></article>
+            <article class="snippet-card"><h3>フォームを開く</h3><p>条件を指定してフォームを開きます。</p><pre><code>DoCmd.OpenForm "F_顧客", WhereCondition:="顧客ID=1"</code></pre></article>
+            <article class="snippet-card"><h3>レポートをPDF出力</h3><p>レポートをPDFとして保存します。</p><pre><code>DoCmd.OutputTo acOutputReport, "R_売上", acFormatPDF, "C:\temp\売上.pdf"</code></pre></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

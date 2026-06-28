@@ -21,6 +21,7 @@
         <a href="#strings">文字列</a>
         <a href="#collections">List/Map</a>
         <a href="#files">ファイル</a>
+        <a href="#csv">CSV</a>
         <a href="#time">日付</a>
         <a href="#ai">AIメモ</a>
         <a class="nav-cta" href="index.html">トップ</a>
@@ -233,6 +234,73 @@
     if (bytes &lt; 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
     return String.format("%.1f MB", bytes / 1024.0 / 1024.0);
 }</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="csv" class="section muted" aria-labelledby="csv-title">
+        <div class="section-inner">
+          <p class="section-kicker">CSV</p>
+          <h2 id="csv-title">CSV入力・出力・形式整形</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>CSVの単純な読み込み</h3>
+              <p>引用符を含まない単純なCSVを行ごとに読みます。</p>
+              <pre><code>public static List&lt;List&lt;String&gt;&gt; readCsvSimple(Path path) throws IOException {
+    return Files.readAllLines(path, StandardCharsets.UTF_8).stream()
+            .map(line -&gt; Arrays.stream(line.split(",", -1))
+                    .map(String::trim)
+                    .toList())
+            .toList();
+}</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSV用に値をエスケープ</h3>
+              <p>カンマ、改行、ダブルクォートを含む値をダブルクォートで囲みます。</p>
+              <pre><code>public static String csvEscape(String value) {
+    if (value == null) return "";
+    String escaped = value.replace("\"", "\"\"");
+    if (escaped.contains(",") || escaped.contains("\n") || escaped.contains("\"")) {
+        return "\"" + escaped + "\"";
+    }
+    return escaped;
+}</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSVを書き出す</h3>
+              <p>行データをCSV文字列にしてUTF-8で保存します。</p>
+              <pre><code>public static void writeCsv(Path path, List&lt;List&lt;String&gt;&gt; rows) throws IOException {
+    List&lt;String&gt; lines = rows.stream()
+            .map(row -&gt; row.stream().map(value -&gt; csvEscape(value)).collect(Collectors.joining(",")))
+            .toList();
+    Files.write(path, lines, StandardCharsets.UTF_8);
+}</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSV項目を正規化</h3>
+              <p>前後空白、全角スペース、nullをまとめて整えます。</p>
+              <pre><code>public static String normalizeCsvField(String value) {
+    if (value == null) return "";
+    return value.replace('　', ' ').trim();
+}</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>ヘッダー行から列番号を作る</h3>
+              <p>列名で値を取り出したいときに使います。</p>
+              <pre><code>public static Map&lt;String, Integer&gt; headerIndex(List&lt;String&gt; header) {
+    Map&lt;String, Integer&gt; index = new LinkedHashMap&lt;&gt;();
+    for (int i = 0; i &lt; header.size(); i++) {
+        index.put(header.get(i), i);
+    }
+    return index;
+}</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSV形式の注意</h3>
+              <p>引用符や改行を含む本格CSVは、自作パーサより実績あるCSVライブラリの利用を検討します。</p>
+              <pre><code>// 単純CSV: splitでも可
+// 本格CSV: quoted field, line break, escape ruleを考慮する</code></pre>
             </article>
           </div>
         </div>

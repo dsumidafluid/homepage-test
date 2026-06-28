@@ -20,6 +20,7 @@
       <nav class="nav" aria-label="主要メニュー">
         <a href="#basics">基本</a>
         <a href="#files">ファイル</a>
+        <a href="#csv">CSV</a>
         <a href="#data">データ</a>
         <a href="#ai">AIメモ</a>
         <a class="nav-cta" href="index.html">トップ</a>
@@ -200,6 +201,92 @@ End Function</code></pre>
               <p>出力ファイルの上書きを避けたいときに便利です。</p>
               <pre><code>Function TimestampName(prefix As String, ext As String) As String
     TimestampName = prefix &amp; "_" &amp; Format(Now, "yyyymmdd_hhnnss") &amp; "." &amp; ext
+End Function</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="csv" class="section" aria-labelledby="csv-title">
+        <div class="section-inner">
+          <p class="section-kicker">CSV</p>
+          <h2 id="csv-title">CSV入力・出力・形式整形</h2>
+          <div class="snippet-grid">
+            <article class="snippet-card">
+              <h3>CSVをUTF-8で開く</h3>
+              <p>Workbooks.OpenTextを使い、カンマ区切りとして開きます。文字化け対策として文字コード指定を意識します。</p>
+              <pre><code>Sub OpenCsvUtf8(csvPath As String)
+    Workbooks.OpenText _
+        Filename:=csvPath, _
+        Origin:=65001, _
+        DataType:=xlDelimited, _
+        Comma:=True
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>シートをCSV UTF-8で保存</h3>
+              <p>対象シートだけを一時ブックにコピーし、CSVとして保存します。</p>
+              <pre><code>Sub ExportSheetToCsvUtf8(ws As Worksheet, csvPath As String)
+    ws.Copy
+    With ActiveWorkbook
+        Application.DisplayAlerts = False
+        .SaveAs Filename:=csvPath, FileFormat:=xlCSVUTF8
+        .Close SaveChanges:=False
+        Application.DisplayAlerts = True
+    End With
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSV用に値をエスケープ</h3>
+              <p>カンマ、改行、ダブルクォートを含む値を安全に出力します。</p>
+              <pre><code>Function CsvEscape(value As Variant) As String
+    Dim text As String
+    text = CStr(value)
+    text = Replace(text, """", """""")
+
+    If InStr(text, ",") &gt; 0 Or InStr(text, vbLf) &gt; 0 Or InStr(text, """") &gt; 0 Then
+        CsvEscape = """" &amp; text &amp; """"
+    Else
+        CsvEscape = text
+    End If
+End Function</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>範囲をCSV文字列へ変換</h3>
+              <p>任意のRangeをCSV形式の文字列にします。</p>
+              <pre><code>Function RangeToCsvText(target As Range) As String
+    Dim r As Long, c As Long
+    Dim line As String, result As String
+
+    For r = 1 To target.Rows.Count
+        line = ""
+        For c = 1 To target.Columns.Count
+            If c &gt; 1 Then line = line &amp; ","
+            line = line &amp; CsvEscape(target.Cells(r, c).Value)
+        Next c
+        result = result &amp; line &amp; vbCrLf
+    Next r
+
+    RangeToCsvText = result
+End Function</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>CSV出力前に列形式を整える</h3>
+              <p>日付やIDが勝手に変換されないよう、必要な列は文字列形式にしてから値を書きます。</p>
+              <pre><code>Sub FormatCsvColumns(ws As Worksheet)
+    ws.Columns("A").NumberFormat = "@"
+    ws.Columns("B").NumberFormat = "yyyy-mm-dd"
+    ws.Columns("C").NumberFormat = "0.00"
+End Sub</code></pre>
+            </article>
+            <article class="snippet-card">
+              <h3>区切り文字と余分な空白を整える</h3>
+              <p>取り込んだCSVの前後空白や全角スペースを簡単に整えます。</p>
+              <pre><code>Function NormalizeCsvField(value As Variant) As String
+    Dim text As String
+    text = CStr(value)
+    text = Replace(text, "　", " ")
+    NormalizeCsvField = Trim(text)
 End Function</code></pre>
             </article>
           </div>

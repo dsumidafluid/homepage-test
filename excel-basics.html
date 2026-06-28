@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Excelの基礎的な使い方、表の作り方、数式、並べ替え、フィルター、CSVの扱い方をまとめます。">
+    <title>Excel 基礎操作 | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム"><span class="brand-mark">D</span><span>Dev Notes</span></a>
+      <nav class="nav" aria-label="主要メニュー"><a href="#input">入力</a><a href="#table">表</a><a href="#csv">CSV</a><a href="#check">確認</a><a class="nav-cta" href="index.html">トップ</a></nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <main>
+      <section class="page-title" aria-labelledby="page-title"><div class="section-inner"><p class="section-kicker">Excel Basics</p><h1 id="page-title">Excel 基礎操作</h1><p>表を壊さず、あとで集計しやすい形にするための基本操作をまとめます。まずは入力、テーブル化、並べ替え、フィルター、CSVの扱いを押さえます。</p></div></section>
+      <section id="input" class="section"><div class="section-inner"><p class="section-kicker">Input</p><h2>入力と数式の基本</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>1セル1データにする</h3><p>1つのセルに複数の意味を詰め込まず、日付、名前、数量、金額などを列で分けます。</p><pre><code>良い例:
+日付 | 商品名 | 数量 | 単価</code></pre></article>
+        <article class="snippet-card"><h3>見出し行を作る</h3><p>1行目に列名を置くと、並べ替え、フィルター、テーブル化、CSV出力が扱いやすくなります。</p><pre><code>見出し例:
+ID, 名前, 日付, 分類, 金額</code></pre></article>
+        <article class="snippet-card"><h3>数式は=から始める</h3><p>合計、差、積、商などの計算はセル参照で書くと、値を変更したときに再計算されます。</p><pre><code>=A2+B2
+=C2*D2
+=SUM(E2:E10)</code></pre></article>
+        <article class="snippet-card"><h3>絶対参照を使う</h3><p>コピーしても参照先を固定したいときは$を付けます。</p><pre><code>=A2*$B$1</code></pre></article>
+      </div></div></section>
+      <section id="table" class="section muted"><div class="section-inner"><p class="section-kicker">Table</p><h2>表・並べ替え・フィルター</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>テーブル化する</h3><p>データ範囲を選んでテーブルにすると、見出し、フィルター、集計範囲の拡張が扱いやすくなります。</p><pre><code>挿入 → テーブル
+または Ctrl + T</code></pre></article>
+        <article class="snippet-card"><h3>並べ替え</h3><p>日付順、金額順、名前順などに並べ替えます。見出しを含む表では、表全体を対象にします。</p><pre><code>データ → 並べ替え
+基準列と昇順/降順を選ぶ</code></pre></article>
+        <article class="snippet-card"><h3>フィルター</h3><p>条件に合う行だけを表示します。元データは消えません。</p><pre><code>データ → フィルター
+列見出しの▼から条件を選ぶ</code></pre></article>
+        <article class="snippet-card"><h3>条件付き書式</h3><p>大きい値、重複、期限切れなどを色で見つけやすくします。</p><pre><code>ホーム → 条件付き書式</code></pre></article>
+      </div></div></section>
+      <section id="csv" class="section"><div class="section-inner"><p class="section-kicker">CSV</p><h2>CSVの扱い方</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>CSVは値だけの形式</h3><p>CSVにはセルの色、幅、数式、シート構成は基本的に残りません。データ交換用と考えます。</p><pre><code>残る: 文字・数値
+残らない: 書式・数式・複数シート</code></pre></article>
+        <article class="snippet-card"><h3>先頭ゼロに注意</h3><p>00123のようなIDは数値扱いで123になることがあります。取り込み時は文字列列として扱います。</p><pre><code>郵便番号、社員番号、品番は文字列扱い</code></pre></article>
+        <article class="snippet-card"><h3>日付形式をそろえる</h3><p>CSV出力前に日付形式をyyyy-mm-ddなどに統一すると、他ツールで読みやすくなります。</p><pre><code>2026-06-29</code></pre></article>
+        <article class="snippet-card"><h3>余分な空白を消す</h3><p>比較や集計の前に、前後空白や全角スペースを整えるとミスが減ります。</p><pre><code>=TRIM(SUBSTITUTE(A2,"　"," "))</code></pre></article>
+      </div></div></section>
+      <section id="check" class="section muted"><div class="section-inner"><p class="section-kicker">Check</p><h2>作業前後の確認</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>元データを残す</h3><p>加工前のシートやファイルを残しておくと、失敗しても戻せます。</p><pre><code>raw_data
+working
+output</code></pre></article>
+        <article class="snippet-card"><h3>件数を確認する</h3><p>取り込み前後で行数が変わっていないか確認します。</p><pre><code>=COUNTA(A:A)</code></pre></article>
+        <article class="snippet-card"><h3>重複を確認する</h3><p>ID列などで重複がないか確認します。</p><pre><code>=COUNTIF($A:$A,A2)</code></pre></article>
+        <article class="snippet-card"><h3>空白を確認する</h3><p>必須列に空白がないかフィルターで確認します。</p><pre><code>フィルター → 空白セルだけ表示</code></pre></article>
+      </div></div></section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>
