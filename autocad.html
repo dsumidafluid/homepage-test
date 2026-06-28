@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AutoCADの有用操作、レイヤ、ブロック、外部参照、注釈、レイアウト、印刷前チェックをまとめます。">
+    <title>AutoCAD 有用操作メモ | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム"><span class="brand-mark">D</span><span>Dev Notes</span></a>
+      <nav class="nav" aria-label="主要メニュー"><a href="#drawing">作図</a><a href="#manage">管理</a><a href="#layout">出力</a><a href="#check">確認</a><a class="nav-cta" href="index.html">トップ</a></nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <main>
+      <section class="page-title" aria-labelledby="page-title"><div class="section-inner"><p class="section-kicker">AutoCAD Notes</p><h1 id="page-title">AutoCAD 有用操作メモ</h1><p>AutoCADで図面を見やすく保つための、レイヤ、ブロック、外部参照、注釈、レイアウト、印刷前確認のメモです。</p></div></section>
+      <section id="drawing" class="section"><div class="section-inner"><p class="section-kicker">Drawing</p><h2>作図の基本</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>レイヤで意味を分ける</h3><p>形状、中心線、寸法、注釈、補助線を分けます。色や線種もレイヤに持たせると管理しやすくなります。</p><pre><code>例:
+OBJ
+CENTER
+DIM
+TEXT
+CONSTRUCTION</code></pre></article>
+        <article class="snippet-card"><h3>オブジェクトスナップを使う</h3><p>端点、中点、中心、交点などに正確に合わせます。目で合わせる作図は後でズレの原因になります。</p><pre><code>よく使う:
+Endpoint
+Midpoint
+Center
+Intersection</code></pre></article>
+        <article class="snippet-card"><h3>直交・極トラッキング</h3><p>水平垂直や特定角度の作図を補助します。角度のズレを減らせます。</p><pre><code>水平/垂直
+30度
+45度
+90度</code></pre></article>
+        <article class="snippet-card"><h3>補助線を残しすぎない</h3><p>補助線は専用レイヤに置き、完成前に非表示または削除します。</p><pre><code>作業中: CONSTRUCTION ON
+出力前: CONSTRUCTION OFF</code></pre></article>
+      </div></div></section>
+      <section id="manage" class="section muted"><div class="section-inner"><p class="section-kicker">Manage</p><h2>図面データを管理する</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>ブロック化する</h3><p>同じ記号や部品を繰り返す場合はブロックにします。置き換えや修正が楽になります。</p><pre><code>向いているもの:
+記号
+標準部品
+図枠
+注記パターン</code></pre></article>
+        <article class="snippet-card"><h3>外部参照を使い分ける</h3><p>共通図面や大きな参照図面はXrefで読み込むと、元図を分けたまま管理できます。</p><pre><code>使いどころ:
+建物全体図
+共通ベース図
+他担当の図面</code></pre></article>
+        <article class="snippet-card"><h3>不要データを整理</h3><p>使っていないレイヤ、ブロック、線種などが増えると図面が重くなります。出力前に整理します。</p><pre><code>確認:
+未使用レイヤ
+未使用ブロック
+不要な補助線</code></pre></article>
+        <article class="snippet-card"><h3>図面単位を確認</h3><p>受け渡し時の尺度違いを避けるため、単位と挿入尺度を確認します。</p><pre><code>mm / m / inch
+尺度
+基準点</code></pre></article>
+      </div></div></section>
+      <section id="layout" class="section"><div class="section-inner"><p class="section-kicker">Layout</p><h2>レイアウト・注釈・印刷</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>モデル空間とレイアウトを分ける</h3><p>実寸の作図はモデル空間、紙面調整はレイアウトで行うと整理しやすくなります。</p><pre><code>Model: 実寸作図
+Layout: 紙面、図枠、尺度</code></pre></article>
+        <article class="snippet-card"><h3>ビューポート尺度を固定</h3><p>尺度が決まったらビューポートをロックし、誤ってズーム尺度が変わらないようにします。</p><pre><code>確認:
+尺度
+表示範囲
+ビューポートロック</code></pre></article>
+        <article class="snippet-card"><h3>注釈尺度を意識する</h3><p>寸法、文字、引出線が出力時に読める大きさになるよう、注釈尺度や文字高さを確認します。</p><pre><code>確認:
+文字高さ
+寸法矢印
+線の太さ</code></pre></article>
+        <article class="snippet-card"><h3>PDF出力前チェック</h3><p>用紙サイズ、印刷範囲、尺度、線の太さ、白黒/カラーを確認します。</p><pre><code>PDF前:
+用紙
+尺度
+線幅
+範囲
+プレビュー</code></pre></article>
+      </div></div></section>
+      <section id="check" class="section muted"><div class="section-inner"><p class="section-kicker">Check</p><h2>受け渡し前チェック</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>原点から遠すぎないか</h3><p>極端に遠い位置に図形があると、表示や寸法で扱いにくいことがあります。不要オブジェクトも確認します。</p><pre><code>確認:
+全体表示
+不要な遠方オブジェクト</code></pre></article>
+        <article class="snippet-card"><h3>重複線を確認</h3><p>重なった線は編集ミスや出力の濃さにつながります。整理してから共有します。</p><pre><code>見る:
+重複
+隙間
+未接続</code></pre></article>
+        <article class="snippet-card"><h3>参照ファイルを同梱</h3><p>Xrefや画像を使っている場合は、相手先でリンク切れしないように整理します。</p><pre><code>同梱:
+DWG
+Xref
+画像
+フォント情報</code></pre></article>
+        <article class="snippet-card"><h3>公式情報へのリンク</h3><p>詳細なコマンド仕様はAutodesk公式ヘルプを参照します。このページは作業方針の自分用メモです。</p><pre><code>https://help.autodesk.com/view/ACD/2025/ENU/</code></pre></article>
+      </div></div></section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

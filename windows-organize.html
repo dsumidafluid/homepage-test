@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Windowsでデータを効率よく整理する方法、フォルダ構成、ファイル名、一時置き場、検索、バックアップのコツをまとめます。">
+    <title>Windows データ整理術 | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム"><span class="brand-mark">D</span><span>Dev Notes</span></a>
+      <nav class="nav" aria-label="主要メニュー"><a href="#rules">ルール</a><a href="#folders">フォルダ</a><a href="#names">命名</a><a href="#cleanup">片付け</a><a class="nav-cta" href="index.html">トップ</a></nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <main>
+      <section class="page-title" aria-labelledby="page-title"><div class="section-inner"><p class="section-kicker">Windows Organizing</p><h1 id="page-title">Windows データ整理術</h1><p>片付けが苦手でも続けやすいように、探す時間を減らすためのフォルダ、ファイル名、一時置き場、検索、バックアップのルールをまとめます。</p></div></section>
+      <section id="rules" class="section"><div class="section-inner"><p class="section-kicker">Rules</p><h2>まず決める基本ルール</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>保存場所を増やしすぎない</h3><p>デスクトップ、ダウンロード、ドキュメント、OneDriveなどに散らばると探せなくなります。主戦場を1つ決めます。</p><pre><code>例:
+D:\work
+D:\private
+D:\archive</code></pre></article>
+        <article class="snippet-card"><h3>一時置き場を作る</h3><p>すぐ分類できないものは一時置き場へ入れます。散らかりを許す場所を1つに限定します。</p><pre><code>00_inbox
+00_temp
+00_sort_later</code></pre></article>
+        <article class="snippet-card"><h3>週1回だけ片付ける</h3><p>毎回完璧に分類しようとすると続きません。週1回、15分だけ一時置き場を空にします。</p><pre><code>金曜 16:30
+00_inboxを空にする</code></pre></article>
+        <article class="snippet-card"><h3>迷ったら消さずにArchive</h3><p>削除に迷うと片付けが止まります。迷うものは年月付きのアーカイブへ移します。</p><pre><code>archive\2026\2026-06_old_files</code></pre></article>
+      </div></div></section>
+      <section id="folders" class="section muted"><div class="section-inner"><p class="section-kicker">Folders</p><h2>探しやすいフォルダ構成</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>番号で並びを固定</h3><p>よく使う順番に番号を付けると、名前順でも崩れません。</p><pre><code>00_inbox
+10_projects
+20_reference
+30_output
+90_archive</code></pre></article>
+        <article class="snippet-card"><h3>案件フォルダは型を作る</h3><p>毎回同じ構成にすると、どこに何を置くか迷いません。</p><pre><code>project_name
+  01_input
+  02_work
+  03_output
+  04_memo
+  90_archive</code></pre></article>
+        <article class="snippet-card"><h3>資料と成果物を分ける</h3><p>受け取った資料、作業中ファイル、提出物を混ぜないようにします。</p><pre><code>input: 受領物
+work: 編集中
+output: 提出物</code></pre></article>
+        <article class="snippet-card"><h3>デスクトップは作業台</h3><p>長期保存場所にせず、今日使うものだけ置きます。終業時に空にするのが理想です。</p><pre><code>Desktop:
+今日使うものだけ</code></pre></article>
+      </div></div></section>
+      <section id="names" class="section"><div class="section-inner"><p class="section-kicker">Names</p><h2>ファイル名ルール</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>日付を先頭に付ける</h3><p>日付順に並び、最新版が分かりやすくなります。</p><pre><code>2026-06-29_meeting-note.md
+2026-06-29_report_v01.xlsx</code></pre></article>
+        <article class="snippet-card"><h3>版数を付ける</h3><p>final、final2、最新版のような名前を避けます。</p><pre><code>proposal_v01.pptx
+proposal_v02.pptx
+proposal_v03_submit.pptx</code></pre></article>
+        <article class="snippet-card"><h3>検索語を入れる</h3><p>後で探す言葉をファイル名に入れます。相手名、案件名、種類、日付が有効です。</p><pre><code>2026-06-29_A社_見積_v01.xlsx</code></pre></article>
+        <article class="snippet-card"><h3>記号を少なくする</h3><p>環境差で困りやすい記号を避け、ハイフンやアンダースコア程度にします。</p><pre><code>OK:
+2026-06-29_project_memo.txt</code></pre></article>
+      </div></div></section>
+      <section id="cleanup" class="section muted"><div class="section-inner"><p class="section-kicker">Cleanup</p><h2>片付け下手向けのお助けテクニック</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>ダウンロードを毎週空にする</h3><p>ダウンロードは仮置き場です。必要なものは移動、不要なものは削除します。</p><pre><code>Downloads:
+必要 → 正式フォルダへ
+不要 → 削除
+不明 → 00_inboxへ</code></pre></article>
+        <article class="snippet-card"><h3>検索を前提にする</h3><p>完璧な分類より、名前と場所を決めて検索できる状態を優先します。</p><pre><code>検索語:
+案件名
+日付
+相手名
+種類</code></pre></article>
+        <article class="snippet-card"><h3>大容量ファイルを定期確認</h3><p>動画、ZIP、古いインストーラー、重複バックアップが容量を使いがちです。</p><pre><code>見る場所:
+Downloads
+Videos
+Desktop
+old_backup</code></pre></article>
+        <article class="snippet-card"><h3>バックアップを1つ持つ</h3><p>大事なデータはPC内だけに置かず、外付けドライブやクラウドにも保存します。</p><pre><code>最低限:
+作業PC
+外付け/クラウド
+重要ファイルだけでも二重化</code></pre></article>
+        <article class="snippet-card"><h3>Storage Senseを使う</h3><p>Windowsのストレージ管理機能で、一時ファイルや不要ファイルの整理を補助できます。削除対象は確認してから実行します。</p><pre><code>設定 → システム → ストレージ</code></pre></article>
+        <article class="snippet-card"><h3>公式情報へのリンク</h3><p>Windowsの検索、ストレージ、OneDriveなどの詳細はMicrosoft Supportを参照します。このページは整理の習慣メモです。</p><pre><code>https://support.microsoft.com/windows</code></pre></article>
+      </div></div></section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

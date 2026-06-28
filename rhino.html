@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Rhinocerosの有用操作、レイヤ管理、選択、表示、ブロック、寸法、出力前チェックをまとめます。">
+    <title>Rhinoceros 有用操作メモ | Dev Notes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header page-header">
+      <a class="brand" href="index.html#top" aria-label="Dev Notes ホーム"><span class="brand-mark">D</span><span>Dev Notes</span></a>
+      <nav class="nav" aria-label="主要メニュー"><a href="#model">モデル</a><a href="#view">表示</a><a href="#edit">編集</a><a href="#output">出力</a><a class="nav-cta" href="index.html">トップ</a></nav>
+      <button class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+    </header>
+    <main>
+      <section class="page-title" aria-labelledby="page-title">
+        <div class="section-inner">
+          <p class="section-kicker">Rhinoceros Notes</p>
+          <h1 id="page-title">Rhinoceros 有用操作メモ</h1>
+          <p>Rhinoでモデルを整理しながら作るための基本操作を、一般的な作業メモとしてまとめます。公式ヘルプの機能名を参考にしつつ、本文は独自に整理しています。</p>
+        </div>
+      </section>
+      <section id="model" class="section"><div class="section-inner"><p class="section-kicker">Model</p><h2>モデルを整理する</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>レイヤを先に分ける</h3><p>部品、補助線、寸法、参照、出力用などでレイヤを分けると、表示切替と選択が楽になります。</p><pre><code>例:
+00_reference
+10_parts
+20_curves
+90_dimensions</code></pre></article>
+        <article class="snippet-card"><h3>名前を付ける</h3><p>重要なオブジェクトやブロックには名前を付けます。後で検索・選択しやすくなります。</p><pre><code>命名例:
+base_plate
+guide_curve_A
+section_profile_01</code></pre></article>
+        <article class="snippet-card"><h3>ブロックで繰り返し部品を管理</h3><p>同じ形状を何度も置く場合はブロック化します。修正箇所を減らし、モデルの一貫性を保ちやすくします。</p><pre><code>向いているもの:
+ボルト、同形パネル、記号、標準部品</code></pre></article>
+        <article class="snippet-card"><h3>単位と許容差を確認</h3><p>作業前に単位、絶対許容差、角度許容差を確認します。後工程で寸法が合わない事故を減らします。</p><pre><code>確認:
+単位
+絶対許容差
+角度許容差</code></pre></article>
+      </div></div></section>
+      <section id="view" class="section muted"><div class="section-inner"><p class="section-kicker">View</p><h2>表示と選択を使い分ける</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>表示モードを切り替える</h3><p>ワイヤ、シェーディング、レンダー系表示を目的別に使います。形状確認と見栄え確認を分けるのがコツです。</p><pre><code>作業中: ワイヤ/シェーディング
+確認: レンダー系
+説明: 見やすい表示設定</code></pre></article>
+        <article class="snippet-card"><h3>Named Viewを使う</h3><p>よく見る方向や説明用ビューを保存しておくと、比較や出力時に同じ見え方を再現できます。</p><pre><code>例:
+front_detail
+isometric_overview
+section_check</code></pre></article>
+        <article class="snippet-card"><h3>選択フィルターを意識する</h3><p>点、曲線、サーフェス、ポリサーフェスなど、対象を絞ると誤選択が減ります。</p><pre><code>選択前に考える:
+何を選びたいか
+何を選びたくないか</code></pre></article>
+        <article class="snippet-card"><h3>一時的に隠す</h3><p>作業の邪魔になる部品は削除せず非表示にします。確認後に戻せるようにするのが安全です。</p><pre><code>Hide / Show
+Isolate系操作
+レイヤ表示切替</code></pre></article>
+      </div></div></section>
+      <section id="edit" class="section"><div class="section-inner"><p class="section-kicker">Edit</p><h2>編集時の事故を減らす</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>補助線レイヤを作る</h3><p>作図用の線と最終形状を混ぜないようにします。不要になった補助線をまとめて非表示・削除できます。</p><pre><code>20_construction
+21_section_curves
+22_reference_points</code></pre></article>
+        <article class="snippet-card"><h3>編集前に複製を残す</h3><p>大きく形状を変える前は、別レイヤや別ファイルに退避します。戻せる安心感が作業速度を上げます。</p><pre><code>backup_before_trim
+backup_before_boolean</code></pre></article>
+        <article class="snippet-card"><h3>Booleanは結果を検査する</h3><p>Boolean後は穴、余分な面、開いたエッジがないか確認します。失敗時は分割・トリムで手作業に戻ります。</p><pre><code>確認:
+エッジ
+法線
+隙間
+不要面</code></pre></article>
+        <article class="snippet-card"><h3>履歴が必要な作業を分ける</h3><p>後から調整したい形状は、元の曲線や断面を残します。完成形だけ残すと修正に弱くなります。</p><pre><code>残すもの:
+元曲線
+断面
+基準点
+作業メモ</code></pre></article>
+      </div></div></section>
+      <section id="output" class="section muted"><div class="section-inner"><p class="section-kicker">Output</p><h2>出力前チェック</h2><div class="snippet-grid">
+        <article class="snippet-card"><h3>寸法と注釈を別レイヤへ</h3><p>モデル形状と注釈を分けると、出力時の表示制御が簡単です。</p><pre><code>90_dimensions
+91_annotations
+92_layout_notes</code></pre></article>
+        <article class="snippet-card"><h3>レイアウトで紙面確認</h3><p>説明資料や図面化では、モデル空間だけでなくレイアウト上で尺度と見え方を確認します。</p><pre><code>確認:
+尺度
+線の太さ
+寸法
+余白</code></pre></article>
+        <article class="snippet-card"><h3>書き出し形式を目的で選ぶ</h3><p>受け渡し先に合わせて、3DM、DWG、DXF、STEP、IGESなどを選びます。単位と尺度の確認もセットです。</p><pre><code>形状共有: 3DM/STEP
+2D共有: DWG/DXF
+資料: PDF/画像</code></pre></article>
+        <article class="snippet-card"><h3>公式情報へのリンク</h3><p>詳細なコマンド仕様は公式ヘルプを参照します。このページは操作の考え方を自分用に整理したメモです。</p><pre><code>https://docs.mcneel.com/rhino/8/help/</code></pre></article>
+      </div></div></section>
+    </main>
+    <footer class="site-footer"><span>&copy; 2026 Dev Notes</span><a href="#top">ページ上部へ</a></footer>
+    <script src="script.js"></script>
+  </body>
+</html>
